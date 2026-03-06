@@ -1,12 +1,15 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+// 1. Import the actual component class
+import { ImageUploaderComponent } from './image-uploader/image-uploader.component'; 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [CommonModule, ImageUploaderComponent], 
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styles: [] // Use "styles" (plural) with an empty array instead
 })
 export class App {
-  protected readonly title = signal('angular-image-processor');
+  title = 'angular-image-processor';
 }

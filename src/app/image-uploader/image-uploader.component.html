@@ -1,0 +1,101 @@
+<div class="main-container" style="font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; text-align: center;">
+  
+  <h1 style="color: #333;">Bulk Image Processor</h1>
+
+  <div class="controls-card" style="background: #f4f4f9; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #ddd;">
+    <input type="file" 
+           (change)="onFilesSelected($event)" 
+           #fileInput 
+           style="display: none" 
+           accept="image/*" 
+           multiple> <button type="button" (click)="fileInput.click()" style="padding: 12px 24px; background: #6f42c1; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-right: 10px;">
+      📁 Select Multiple Files
+    </button>
+
+    @if (!isCameraOpen()) {
+      <button type="button" (click)="startCamera()" style="padding: 12px 24px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+        📸 Open Camera
+      </button>
+    }
+  </div>
+
+  @if (isCameraOpen()) {
+    <div class="camera-box" style="margin-bottom: 20px; background: #000; padding: 10px; border-radius: 10px;">
+      <video #video autoplay playsinline style="width: 100%; max-width: 500px; border-radius: 8px;"></video>
+      <canvas #canvas style="display: none;"></canvas>
+      <div style="margin-top: 10px;">
+        <button (click)="capturePhoto()" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px;">Snap Photo</button>
+        <button (click)="stopCamera()" style="padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Cancel</button>
+      </div>
+    </div>
+  }
+
+  @if (selectedFiles().length > 0) {
+    <div class="queue-section" style="border: 2px dashed #ccc; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
+      <h3 style="margin-top: 0;">Images in Queue: {{ selectedFiles().length }}</h3>
+      
+      <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+        @for (preview of imagePreviews(); track $index) {
+          <div style="position: relative; width: 100px; height: 100px;">
+            <img [src]="preview" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
+            <button (click)="removeFile($index)" 
+                    style="position: absolute; top: -8px; right: -8px; background: #ff4d4d; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+              ×
+            </button>
+          </div>
+        }
+      </div>
+
+      <button (click)="uploadAll()" style="margin-top: 25px; padding: 15px 40px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; width: 100%;">
+        🚀 Process All Images with Go
+      </button>
+    </div>
+  }
+
+  @if (scanResults().length > 0) {
+    <div class="results-container" style="text-align: left; margin-top: 40px;">
+      <h2 style="border-bottom: 2px solid #007bff; padding-bottom: 10px;">Verification Workspace</h2>
+      
+      @for (result of scanResults(); track $index) {
+        <div class="result-card" style="display: flex; gap: 20px; background: #fff; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 12px; align-items: start;">
+          
+          <div class="image-viewer" style="flex: 1; max-width: 250px;">
+            <p style="font-size: 0.7em; font-weight: bold; color: #999; text-transform: uppercase;">Original Image</p>
+            <img [src]="result.image" style="width: 100%; border-radius: 4px; border: 1px solid #eee; cursor: zoom-in;" 
+                 (click)="openLargePreview(result.image)">
+          </div>
+  
+          <div class="form-editor" style="flex: 2;">
+            <h4 style="margin: 0 0 10px 0; color: #007bff;">Scanned Data #{{ $index + 1 }}</h4>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label style="font-size: 0.75em; font-weight: bold;">Name</label>
+                <input [(ngModel)]="result.name" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+              <div>
+                <label style="font-size: 0.75em; font-weight: bold;">Employee ID</label>
+                <input [(ngModel)]="result.employee_number" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+              <div>
+                <label style="font-size: 0.75em; font-weight: bold;">Date</label>
+                <input [(ngModel)]="result.date" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+              <div>
+                <label style="font-size: 0.75em; font-weight: bold;">Shift</label>
+                <input [(ngModel)]="result.type_of_shift" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+            </div>
+          </div>
+  
+        </div>
+      }
+  
+      <div style="text-align: center; margin: 30px 0;">
+         <button (click)="saveChanges()" style="padding: 15px 60px; background: #28a745; color: white; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(40,167,69,0.3);">
+           Save All Verified Data
+         </button>
+      </div>
+    </div>
+  }
+</div>
