@@ -1,8 +1,33 @@
-# AngularImageProcessor
+# stx-schedule-scanner-web
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
 
+# 🎨 Angular Scanner UI
+
+A modern, reactive dashboard for uploading and verifying scanned employee records. Built with **Angular 19+** and **Signals** for optimized performance.
+
+
+
+[Image of Angular project structure overview]
+
+
+## 🛠 Prerequisites
+
+- **Node.js**: v20.x or newer (LTS recommended).
+- **Angular CLI**: Install globally via npm:
+  ```bash
+  npm install -g @angular/cli
+  
 ## Development server
+Configure Backend URL:
+Ensure src/environments/environment.ts points to your Go server:
+
+```
+TypeScript
+export const environment = {
+  apiUrl: 'http://localhost:8080'
+};
+```
 
 To start a local development server, run:
 
