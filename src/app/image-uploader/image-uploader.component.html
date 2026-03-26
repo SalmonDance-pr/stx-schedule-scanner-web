@@ -49,6 +49,10 @@
       <button (click)="uploadAll()" style="margin-top: 25px; padding: 15px 40px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; width: 100%;">
         🚀 Process All Images with Go
       </button>
+      <button (click)="clearAll()" class="btn-danger" 
+                  style="background-color: #ff4d4d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+            🗑️ Erase All
+          </button>
     </div>
   }
 
@@ -67,12 +71,17 @@
   
           <div class="form-editor" style="flex: 2;">
             <h4 style="margin: 0 0 10px 0; color: #007bff;">Scanned Data #{{ $index + 1 }}</h4>
-            
+          
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
               <div>
                 <label style="font-size: 0.75em; font-weight: bold;">Name</label>
                 <input [(ngModel)]="result.name" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
               </div>
+              <div>
+                <label style="font-size: 0.75em; font-weight: bold;">Last Name</label>
+                <input [(ngModel)]="result.last_name" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+          
               <div>
                 <label style="font-size: 0.75em; font-weight: bold;">Employee ID</label>
                 <input [(ngModel)]="result.employee_number" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
@@ -81,9 +90,28 @@
                 <label style="font-size: 0.75em; font-weight: bold;">Date</label>
                 <input [(ngModel)]="result.date" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
               </div>
+          
+              <div>
+                <label style="font-size: 0.75em; font-weight: bold;">Day of Week</label>
+                <input [(ngModel)]="result.day_of_week" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+              <div>
+                <label style="font-size: 0.75em; font-weight: bold;">Day Number</label>
+                <input type="number" [(ngModel)]="result.day_of_week_number" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+          
+              <div>
+                <label style="font-size: 0.75em; font-weight: bold;">Schedule Type</label>
+                <input [(ngModel)]="result.type_of_schedule" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
               <div>
                 <label style="font-size: 0.75em; font-weight: bold;">Shift</label>
                 <input [(ngModel)]="result.type_of_shift" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+          
+              <div>
+                <label style="font-size: 0.75em; font-weight: bold;">Rest</label>
+                <input [(ngModel)]="result.rest" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
               </div>
             </div>
           </div>
@@ -96,6 +124,16 @@
            Save All Verified Data
          </button>
       </div>
+      @if (scanResults().length > 0) {
+        <div class="results-actions" style="margin-top: 30px; display: flex; gap: 15px; justify-content: center; padding-bottom: 50px;">
+      
+          <button (click)="resetWorkspace()" class="btn-outline-danger" 
+                  style="background-color: transparent; color: #dc3545; border: 2px solid #dc3545; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold;">
+            🗑️ Clear All & Start Over
+          </button>
+      
+        </div>
+      }
     </div>
   }
 </div>

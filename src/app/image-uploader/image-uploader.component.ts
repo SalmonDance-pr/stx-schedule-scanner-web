@@ -146,16 +146,56 @@ export class ImageUploaderComponent {
   }
 
   // 1. Add this signal at the top with your others
-enlargedImage = signal<string | null>(null);
+  enlargedImage = signal<string | null>(null);
 
-// 2. Add these functions inside the class
-openLargePreview(imageUrl: string | undefined) {
-  if (imageUrl) {
-    this.enlargedImage.set(imageUrl);
+  // 2. Add these functions inside the class
+  openLargePreview(imageUrl: string | undefined) {
+    if (imageUrl) {
+      this.enlargedImage.set(imageUrl);
+    }
   }
-}
 
-closeLargePreview() {
-  this.enlargedImage.set(null);
-}
+  closeLargePreview() {
+    this.enlargedImage.set(null);
+  }
+
+  // --- ERASE / RESET LOGIC ---
+  clearAll() {
+    // 1. If camera is running, kill the stream first
+    if (this.isCameraOpen()) {
+      this.stopCamera();
+    }
+
+    // 2. Wipe all Signals back to empty states
+    this.selectedFiles.set([]);
+    this.imagePreviews.set([]);
+    this.scanResults.set([]);
+    this.enlargedImage.set(null);
+
+    // 3. Reset the actual HTML input so you can re-select the same file
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+
+    console.log("Workspace cleared.");
+  }
+
+  // Add this to your class
+  resetWorkspace() {
+    // Clear the previews and file queue
+    this.selectedFiles.set([]);
+    this.imagePreviews.set([]);
+    
+    // Clear the OCR results (the forms)
+    this.scanResults.set([]);
+    
+    // Reset the hidden file input so the same file can be uploaded twice
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+    
+    console.log("Workspace has been fully reset.");
+  }
 }
